@@ -1,12 +1,102 @@
-StayNest
+\# StayNest — Property Rental Platform
 
-A full-stack property rental platform with separate customer-facing and admin portals, backed by a
 
-Spring Boot REST API. The project follows a monorepo structure and provides role-based access for
 
-Guests, Hosts, and Administrators.
+A full-stack property rental platform with separate customer-facing and admin portals, backed by a Spring Boot REST API. The project follows a monorepo structure and provides role-based access for Guests, Hosts, and Administrators.
 
-Monorepo Structure
+
+
+\---
+
+
+
+\## Tech Stack
+
+
+
+| Layer | Technology |
+
+|---|---|
+
+| Frontend (Customer) | React 19, Vite, Tailwind CSS, TanStack Router, TanStack Query |
+
+| Frontend (Admin) | React 19, Vite, Tailwind CSS, TanStack Router, TanStack Query |
+
+| Backend | Spring Boot, Spring Security, Spring Data JPA |
+
+| Authentication | JWT (JSON Web Tokens), Role-Based Authorization |
+
+| Database | MySQL 8.x |
+
+| Migrations | Liquibase |
+
+| API Documentation | SpringDoc OpenAPI, Swagger UI |
+
+| Build Tool | Maven (Wrapper Included) |
+
+
+
+\---
+
+
+
+\## Architecture Overview
+
+
+
+The application follows a three-tier architecture with a clean separation between presentation, business logic, and data persistence. Both the Customer and Admin React frontends communicate with the Spring Boot backend exclusively through REST APIs secured with JWT. The backend talks to MySQL for persistence, with schema versioning handled entirely by Liquibase.
+
+
+
+```
+
+Customer Portal (React) ─┐
+
+&#x20;                         ├─→ JWT in Authorization header → Spring Security filter chain
+
+Admin Portal (React) ────┘        → Controller → Service → Repository → MySQL
+
+
+
+Roles: Guest → Host → Admin (role-based access enforced at the security + service layer)
+
+```
+
+
+
+\### Layered Backend Structure
+
+
+
+| Layer | Responsibility | Example Classes |
+
+|---|---|---|
+
+| Controller | Expose REST endpoints, validate HTTP requests | `AuthController`, `PropertyController`, `BookingController`, `AdminController` |
+
+| Service | Business logic, orchestration | `AuthService`, `PropertyService`, `BookingService`, `AdminService` |
+
+| Repository | Database access via Spring Data JPA | `UserRepository`, `PropertyRepository`, `BookingRepository` |
+
+| Entity | JPA-mapped database tables | `User`, `Property`, `Booking`, `Review`, `Message` |
+
+| Security | JWT generation, validation, filter chain | `JwtTokenProvider`, `JwtAuthenticationFilter`, `SecurityConfig` |
+
+| DTO | Request/response shaping | `AuthRequest`, `AuthResponse`, `PropertyRequest`, `BookingRequest` |
+
+| Exception | Centralized error handling | `GlobalExceptionHandler`, `ResourceNotFoundException` |
+
+
+
+\---
+
+
+
+\## Monorepo Structure
+
+
+
+```
 
 staynest/
 
@@ -14,629 +104,431 @@ staynest/
 
 │   └── apps/
 
-│       
+│       ├── customers/          # Customer Portal (React + Vite)
 
-├── customers/          
-
-│       
-
-└── admin/              
+│       └── admin/               # Admin Portal (React + Vite)
 
 ├── services/
 
-│   └── RentalBackend/          
+│   └── RentalBackend/          # Spring Boot REST API
 
 ├── .gitignore
 
 └── README.md
 
-Note: The nested 
+```
 
-\# Customer Portal (React + Vite)
+> Note: The nested `apps/apps/` directory structure is intentional and is part of the project organization.
 
-\# Admin Portal (React + Vite)
 
-\# Spring Boot REST API
 
-apps/apps/ directory structure is intentional and is part of the
+\---
 
-project organization.
 
-Features
 
-Customer Portal
+\## Features
 
-• 
 
-• 
 
-• 
+\*\*Customer Portal\*\*
 
-• 
+\- User Registration \& Login
 
-• 
+\- Search Properties
 
-• 
+\- Property Details
 
-User Registration \& Login
+\- Booking Management
 
-Search Properties
+\- Reviews \& Ratings
 
-Property Details
+\- Messaging
 
-Booking Management
 
-Reviews \& Ratings
 
-Messaging
+\*\*Admin Portal\*\*
 
-Admin Portal
+\- Dashboard
 
-• 
+\- User Management
 
-• 
+\- Property Approval
 
-• 
+\- Booking Monitoring
 
-• 
+\- Analytics
 
-• 
+\- Property Status Management
 
-• 
 
-Dashboard
 
-User Management
+\*\*Backend\*\*
 
-Property Approval
+\- REST APIs
 
-Booking Monitoring
+\- JWT Authentication
 
-Analytics
+\- Role-Based Authorization
 
-Property Status Management
+\- Swagger API Documentation
 
-Backend
+\- Liquibase Database Migration
 
-• 
+\- Spring Security
 
-REST APIs
+\- MySQL Database
 
-1
 
-• 
 
-• 
+\---
 
-• 
 
-• 
 
-• 
+\## Setup Instructions (Local Development)
 
-• 
 
-JWT Authentication
 
-Role-Based Authorization
+\### Prerequisites
 
-Swagger API Documentation
+\- Java 21
 
-Liquibase Database Migration
+\- Maven (Wrapper Included)
 
-Spring Security
+\- Node.js 20.x or later
 
-MySQL Database
+\- npm 10.x or later
 
-Technology Stack
+\- MySQL 8.x
 
-Frontend
+\- Git
 
-• 
 
-• 
 
-• 
+\### Backend Setup
 
-• 
-
-• 
-
-React 19
-
-Vite
-
-Tailwind CSS
-
-TanStack Router
-
-TanStack Query
-
-Backend
-
-• 
-
-• 
-
-• 
-
-• 
-
-• 
-
-• 
-
-Spring Boot
-
-Spring Security
-
-Spring Data JPA
-
-JWT Authentication
-
-Liquibase
-
-Maven
-
-Database
-
-• 
-
-MySQL 8.x
-
-API Documentation
-
-• 
-
-• 
-
-SpringDoc OpenAPI
-
-Swagger UI
-
-Prerequisites
-
-Before running the project, ensure the following software is installed:
-
-• 
-
-• 
-
-• 
-
-• 
-
-• 
-
-• 
-
-Java 21
-
-Maven (Wrapper Included)
-
-Node.js 20.x or later
-
-npm 10.x or later
-
-MySQL 8.x
-
-Git
-
-2
-
-Environment Variables
-
-Backend (
-
-services/RentalBackend )
-
-Configure the following variables before starting the backend.
-
-Variable
-
-DB\_URL
-
-Description
-
-Database Connection
-
-URL
-
-Example
-
-jdbc:mysql://localhost:3306/
-
-staynest\_db
-
-DB\_USERNAME
-
-Database Username
-
-root
-
-DB\_PASSWORD
-
-Database Password
-
-your\_db\_password
-
-JWT\_SECRET
-
-JWT Secret Key
-
-your-secret-key
-
-JWT\_EXPIRATION\_MS
-
-JWT Token Expiration
-
-3600000
-
-CORS\_ALLOWED\_ORIGINS Allowed Origins
-
-http://localhost:5173,http://
-
-localhost:5174
-
-SERVER\_PORT
-
-Backend Port
-
-8080
-
-Note: For production deployments, store sensitive values in environment variables or a
-
-secure secrets manager rather than hardcoding them.
-
-Frontend (
-
-apps/apps/customers \& 
-
-Create a 
-
-.env file.
-
-Variable
-
-Description
-
-apps/apps/admin )
-
-Example
-
-VITE\_API\_BASE\_URL
-
-Backend API URL
-
-http://localhost:8080/api/v1
-
-Database Setup
-
-Start MySQL.
-
-Create the database:
-
-CREATE DATABASE staynest\_db;
-
-The database schema is managed automatically using Liquibase. No manual SQL scripts are required
-
-after creating the database.
-
-3
-
-Running the Backend
+```bash
 
 cd services/RentalBackend
 
+```
+
+
+
+Create the database:
+
+```sql
+
+CREATE DATABASE staynest\_db;
+
+```
+
+The schema is managed automatically using Liquibase — no manual SQL scripts are required after creating the database.
+
+
+
+Configure environment variables before starting the backend:
+
+
+
+| Variable | Description | Example |
+
+|---|---|---|
+
+| `DB\_URL` | Database Connection URL | `jdbc:mysql://localhost:3306/staynest\_db` |
+
+| `DB\_USERNAME` | Database Username | `root` |
+
+| `DB\_PASSWORD` | Database Password | `your\_db\_password` |
+
+| `JWT\_SECRET` | JWT Secret Key | `your-secret-key` |
+
+| `JWT\_EXPIRATION\_MS` | JWT Token Expiration | `3600000` |
+
+| `CORS\_ALLOWED\_ORIGINS` | Allowed Origins | `http://localhost:5173,http://localhost:5174` |
+
+| `SERVER\_PORT` | Backend Port | `8080` |
+
+
+
+> For production deployments, store sensitive values in environment variables or a secure secrets manager rather than hardcoding them.
+
+
+
+Run the app:
+
+```bash
+
 mvnw.cmd spring-boot:run
 
-Backend URL
+```
 
-http://localhost:8080/api/v1
+Backend runs on `http://localhost:8080/api/v1`.
 
-Swagger Documentation
 
-http://localhost:8080/api/v1/docs
 
-Running the Customer Portal
+\### Customer Portal Setup
+
+```bash
 
 cd apps/apps/customers
 
 npm install --legacy-peer-deps
 
+```
+
+
+
+Create a `.env` file:
+
+```
+
+VITE\_API\_BASE\_URL=http://localhost:8080/api/v1
+
+```
+
+
+
+Run the dev server:
+
+```bash
+
 npm run dev
 
-Application URL
+```
 
-http://localhost:5173
+Runs on `http://localhost:5173`.
 
-Running the Admin Portal
+
+
+\### Admin Portal Setup
+
+```bash
 
 cd apps/apps/admin
 
 npm install --legacy-peer-deps
 
+```
+
+
+
+Create a `.env` file:
+
+```
+
+VITE\_API\_BASE\_URL=http://localhost:8080/api/v1
+
+```
+
+
+
+Run the dev server:
+
+```bash
+
 npm run dev
 
-Application URL
+```
 
-http://localhost:5174
+Runs on `http://localhost:5174`.
 
-4
 
-API Documentation
 
-Swagger UI is integrated using SpringDoc OpenAPI.
+\---
 
-After starting the backend, open:
+
+
+\## API Documentation
+
+
+
+Swagger UI is integrated using SpringDoc OpenAPI. After starting the backend, open:
+
+
+
+```
 
 http://localhost:8080/api/v1/docs
 
+```
+
+
+
 Swagger provides:
 
-• 
+\- Interactive API Documentation
 
-• 
+\- Request \& Response Models
 
-• 
+\- JWT Authentication Support
 
-• 
+\- Try-It-Out Feature
 
-• 
+\- Response Codes
 
-• 
+\- Example Requests
 
-Interactive API Documentation
 
-Request \& Response Models
 
-JWT Authentication Support
+\---
 
-Try-It-Out Feature
 
-Response Codes
 
-Example Requests
+\## Database Migration
 
-Database Migration
 
-Liquibase is used for database version control.
 
-Database changelog files are located at:
+Liquibase is used for database version control. Changelog files are located at:
 
-services/
 
-└── RentalBackend/
 
-└── src/
+```
 
-└── main/
+services/RentalBackend/src/main/resources/db/changelog/
 
-└── resources/
+```
 
-└── db/
 
-└── changelog/
 
 Files included:
 
-• 
+\- `db.changelog-master.xml`
 
-• 
+\- `db.changelog-1.0-create-users-roles.xml`
 
-• 
+\- `db.changelog-1.1-create-properties.xml`
 
-• 
+\- `db.changelog-1.2-create-bookings-reviews-messages.xml`
 
-• 
+\- `db.changelog-1.3-create-booking-dates.xml`
 
-• 
+\- `db.changelog-1.4-add-missing-fks.xml`
 
-db.changelog-master.xml
 
-db.changelog-1.0-create-users-roles.xml
 
-db.changelog-1.1-create-properties.xml
+\---
 
-db.changelog-1.2-create-bookings-reviews-messages.xml
 
-db.changelog-1.3-create-booking-dates.xml
 
-db.changelog-1.4-add-missing-fks.xml
+\## Security
 
-5
 
-Security
 
 The application uses:
 
-• 
+\- Spring Security
 
-• 
+\- JWT Authentication
 
-• 
+\- Role-Based Authorization
 
-• 
+\- Password Encryption
 
-• 
+\- CORS Configuration
 
-Spring Security
 
-JWT Authentication
 
-Role-Based Authorization
+\*\*Available Roles:\*\* Guest · Host · Admin
 
-Password Encryption
 
-CORS Configuration
 
-Available Roles:
+\---
 
-• 
 
-• 
 
-• 
+\## Project Modules
 
-Guest
 
-Host
 
-Admin
+| Module | Capabilities |
 
-Project Modules
+|---|---|
 
-Authentication
+| Authentication | Login, Register, JWT Token Generation |
 
-• 
+| Property | Create, Update, Delete, View Property |
 
-• 
+| Search | Search Listings, Filter Listings |
 
-• 
+| Booking | Create Booking, Cancel Booking, Booking History |
 
-Login
+| Reviews | Add Review, View Reviews |
 
-Register
+| Messaging | Send Message, View Conversation |
 
-JWT Token Generation
+| Admin | Dashboard, User Management, Property Approval, Analytics |
 
-Property
 
-• 
 
-• 
+\---
 
-• 
 
-• 
 
-Create Property
+\## Verification Steps
 
-Update Property
 
-Delete Property
 
-View Property
+1\. Start MySQL.
 
-Search
+2\. Create the database.
 
-• 
+3\. Start the backend.
 
-• 
+4\. Open Swagger UI.
 
-Search Listings
+5\. Start the Customer Portal.
 
-Filter Listings
+6\. Start the Admin Portal.
 
-Booking
+7\. Register/Login.
 
-• 
+8\. Verify booking, property management, messaging, reviews, and admin operations.
 
-• 
 
-• 
 
-Create Booking
+\---
 
-Cancel Booking
 
-Booking History
 
-Reviews
+\## Repository
 
-• 
 
-• 
 
-Add Review
+| Component | Path |
 
-View Reviews
+|---|---|
 
-Messaging
+| Frontend (Customer) | `apps/apps/customers` |
 
-Send Message
+| Frontend (Admin) | `apps/apps/admin` |
 
-6
+| Backend | `services/RentalBackend` |
 
-• 
 
-View Conversation
 
-• 
+\---
 
-Admin
 
-• 
 
-• 
-
-• 
-
-• 
-
-Dashboard
-
-User Management
-
-Property Approval
-
-Analytics
-
-Verification Steps
-
-1\. 
-
-2\. 
-
-3\. 
-
-4\. 
-
-5\. 
-
-6\. 
-
-7\. 
-
-8\. 
-
-Start MySQL.
-
-Create the database.
-
-Start the backend.
-
-Open Swagger UI.
-
-Start the Customer Portal.
-
-Start the Admin Portal.
-
-Register/Login.
-
-Verify booking, property management, messaging, reviews, and admin operations.
-
-Repository
-
-Frontend(Customer)
-
-apps/apps/customers
-
-Frontend(Admin)
-
-apps/apps/admin
-
-Backend
-
-services/RentalBackend
-
-Contributors
+\## Contributors
 
 StayNest Development Team
 
-License
+
+
+\## Author
+
+\- \*\*Chintha Jyoshna\*\*
+
+\- MCA Graduate (2025)
+
+\- Java Full Stack Developer
+
+\- GitHub: \[Josuchintha63](https://github.com/Josuchintha63)
+
+
+
+\## License
 
 This project is developed for educational and project submission purposes.
-
-7
 
