@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+	<changeSet id="2" author="staynest">
+
+		<createTable tableName="properties">
+
+			<column name="id"
+				type="BIGINT"
+				autoIncrement="true">
+				<constraints primaryKey="true"
+					nullable="false" />
+			</column>
+
+			<column name="title"
+				type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="description"
+				type="TEXT">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="address"
+				type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="city"
+				type="VARCHAR(100)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="country"
+				type="VARCHAR(100)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="latitude"
+				type="DOUBLE" />
+
+			<column name="longitude"
+				type="DOUBLE" />
+
+			<column name="property_type"
+				type="VARCHAR(100)" />
+
+			<column name="price_per_night"
+				type="DECIMAL(10,2)" />
+
+			<column name="cleaning_fee"
+				type="DECIMAL(10,2)" />
+
+			<column name="service_fee_rate"
+				type="DECIMAL(5,4)" />
+
+			<column name="status"
+				type="VARCHAR(30)" />
+
+			<column name="host_id"
+				type="BIGINT">
+				<constraints
+					nullable="false"
+					referencedTableName="users"
+					referencedColumnNames="id"
+					foreignKeyName="fk_property_host" />
+			</column>
+
+		</createTable>
+
+		<createTable tableName="property_photos">
+
+			<column name="id"
+				type="BIGINT"
+				autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+
+			<column name="property_id"
+				type="BIGINT">
+				<constraints
+					nullable="false"
+					referencedTableName="properties"
+					referencedColumnNames="id"
+					foreignKeyName="fk_photo_property" />
+			</column>
+
+			<column name="photo_url"
+				type="VARCHAR(500)" />
+
+			<column name="display_order"
+				type="INT" />
+
+		</createTable>
+
+		<createTable tableName="property_amenities">
+
+			<column name="id"
+				type="BIGINT"
+				autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+
+			<column name="property_id"
+				type="BIGINT">
+				<constraints
+					nullable="false"
+					referencedTableName="properties"
+					referencedColumnNames="id"
+					foreignKeyName="fk_amenity_property" />
+			</column>
+
+			<column name="amenity_name"
+				type="VARCHAR(100)" />
+
+		</createTable>
+
+	</changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+	<changeSet id="3" author="staynest">
+
+		<createTable tableName="bookings">
+
+			<column name="id"
+				type="BIGINT"
+				autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+
+			<column name="property_id"
+				type="BIGINT">
+				<constraints
+					nullable="false"
+					referencedTableName="properties"
+					referencedColumnNames="id"
+					foreignKeyName="fk_booking_property" />
+			</column>
+
+			<column name="guest_id"
+				type="BIGINT">
+				<constraints
+					nullable="false"
+					referencedTableName="users"
+					referencedColumnNames="id"
+					foreignKeyName="fk_booking_guest" />
+			</column>
+
+			<column name="check_in"
+				type="DATE" />
+
+			<column name="check_out"
+				type="DATE" />
+
+			<column name="total_guests"
+				type="INT" />
+
+			<column name="status"
+				type="VARCHAR(30)" />
+
+			<column name="price_per_night"
+				type="DECIMAL(10,2)" />
+
+			<column name="num_nights"
+				type="INT" />
+
+			<column name="cleaning_fee"
+				type="DECIMAL(10,2)" />
+
+			<column name="service_fee"
+				type="DECIMAL(10,2)" />
+
+			<column name="tax_amount"
+				type="DECIMAL(10,2)" />
+
+			<column name="total_price"
+				type="DECIMAL(10,2)" />
+
+			<column name="refund_amount"
+				type="DECIMAL(10,2)" />
+		</createTable>
+
+		<createTable tableName="reviews">
+
+			<column name="id"
+				type="BIGINT"
+				autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+
+			<column name="booking_id"
+				type="BIGINT" />
+
+			<column name="reviewer_id"
+				type="BIGINT" />
+
+			<column name="rating"
+				type="INT" />
+
+			<column name="comment"
+				type="TEXT" />
+		</createTable>
+
+		<createTable tableName="messages">
+
+			<column name="id"
+				type="BIGINT"
+				autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+
+			<column name="booking_id"
+				type="BIGINT" />
+
+			<column name="sender_id"
+				type="BIGINT" />
+
+			<column name="message"
+				type="TEXT" />
+
+			<column name="created_at"
+				type="TIMESTAMP" />
+		</createTable>
+
+	</changeSet>
+
+</databaseChangeLog>

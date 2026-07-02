@@ -1,0 +1,29 @@
+# Node (customer & admin apps)
+node_modules/
+apps/apps/customers/node_modules/
+apps/apps/admin/node_modules/
+apps/apps/customers/dist/
+apps/apps/admin/dist/
+apps/apps/customers/.env*
+apps/apps/admin/.env*
+
+# Spring Boot (RentalBackend)
+services/RentalBackend/target/
+services/RentalBackend/.mvn/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Root env
+.env
